@@ -1,0 +1,64 @@
+package main
+
+import(
+	"fmt"
+	"sync"
+	"time"
+)
+const(
+	numPhilosopher=3 
+	maxDiningCycles=2
+)
+type Philosopher struct{
+	id int
+	leftFork,rightFork *sync.Mutex
+	diningCycles int
+}
+type DiningTable struct{
+	philosophers[]*Philosopher
+	waiter *sync.Mutex
+}
+func(n *Philosopher)think(){
+	fmt.Printf("Philosopher %d is thinking\n",p.id)
+	time.Sleep(time.Second)
+}
+func(p *Philosopher)eat(){
+	p.leftFork.Lock()
+	p.rightFork.Lock()
+	fmt.Printf("Philosopher %d is eating\n",p.id)
+	time.Sleep(time.Second)
+	p.rightFork.Unlock()
+	p.leftFork.Unlock()
+	p.diningCycles++
+}
+func(p *Philosopher)dine(table *DiningTable){
+	for p.diningCycles<maxDiningCycles{
+		p.think()
+		table.waiter.Lock()
+		p.eat()
+		table.waiter.Unlock()
+	}
+}
+func main(){
+	table:=&DiningTable{
+		philosophers: make([]*Philosopher,numPhilosophers),
+		waiter: &syncMutex{}
+	}
+	//Create forks
+	forks:=make([]*sync.Mutex.numPhilosopher)
+	for i:=0;i<numPhilosophers{
+		id: i,
+		leftFork: forks[i],
+		rightFork: forks[(i+1)%numPhilosophers],
+	}
+}
+//Start dining
+var wg sync.WaitGroup
+wg.Add(numPhilosophers)
+for i:=0;i<numPhilosophers;i++{
+	go func(p *Philosopher){
+		defer wg.Done()
+		p.dine(table)
+	}(table.philosophers[i])
+}
+wg.Wait()
