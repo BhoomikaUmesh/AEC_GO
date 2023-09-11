@@ -2,6 +2,7 @@ package main
 import(
 	"fmt"
 	"net/http"
+	"log"
 )
 func main(){
 	var port string
@@ -10,10 +11,8 @@ func main(){
 	http.HandleFunc("/",func(w http.ResponseWriter,r *http.Request){
 		fmt.Fprintln(w,"hello world")
 	})
+	port=":3000"
 	fmt.Printf("Server is running on localhost:%s\n",port)
-	err := http.ListenAndServe(":"+port, nil)
-	if err != nil {
-		fmt.Printf("Server error: %s\n", err)
-	}
+	log.Fatal(http.ListenAndServe(port,nil))
 }
 
